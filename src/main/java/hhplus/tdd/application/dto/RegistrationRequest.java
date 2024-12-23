@@ -1,4 +1,8 @@
 package hhplus.tdd.application.dto;
 
-public class RegistrationRequest {
+public record RegistrationRequest (
+    String studentId,
+    Long lectureId
+){
+
 }
