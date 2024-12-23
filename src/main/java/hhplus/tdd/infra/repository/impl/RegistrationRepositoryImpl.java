@@ -1,4 +1,8 @@
 package hhplus.tdd.infra.repository.impl;
 
-public class RegistrationRepositoryImpl {
+import hhplus.tdd.domain.repository.RegistrationRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class RegistrationRepositoryImpl implements RegistrationRepository {
 }

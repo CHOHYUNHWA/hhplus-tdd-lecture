@@ -1,4 +1,7 @@
 package hhplus.tdd.infra.repository;
 
-public interface RegistrationJpaRepository {
+import hhplus.tdd.infra.entity.RegistrationEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RegistrationJpaRepository extends JpaRepository<RegistrationEntity, Long> {
 }
