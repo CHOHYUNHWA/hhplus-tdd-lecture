@@ -20,4 +20,10 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
         Optional<RegistrationEntity> registration = registrationJpaRepository.findByLectureIdAndStudentId(lectureId, studentId);
         return registration.isPresent();
     }
+
+    @Override
+    public void save(Long lectureId, Long studentId) {
+        RegistrationEntity registrationEntity = RegistrationEntity.of(lectureId, studentId);
+        registrationJpaRepository.save(registrationEntity);
+    }
 }

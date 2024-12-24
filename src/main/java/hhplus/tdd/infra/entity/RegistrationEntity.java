@@ -2,6 +2,7 @@ package hhplus.tdd.infra.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,9 @@ public class RegistrationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "LECTURE_ID",nullable = false)
-    private Long lectureId;
+    @ManyToOne(fetch = FetchType.LAZY) // 다대일 관계 매핑
+    @JoinColumn(name = "lecture_id", nullable = false) // lecture_id가 외래키
+    private LectureEntity lecture;
 
     @Column(name = "STUDENT_ID", nullable = false)
     private Long studentId;
@@ -26,4 +28,14 @@ public class RegistrationEntity {
     @Column(name = "REGISTRATION_DT", nullable = false)
     private LocalDateTime registrationDt;
 
+    public static RegistrationEntity of(Long lectureId, Long studentId) {
+        RegistrationEntity registrationEntity = new RegistrationEntity();
+        registrationEntity.studentId = studentId;
+
+        registrationEntity.lecture = new LectureEntity();
+        registrationEntity.lecture.addLectureId(lectureId);
+        registrationEntity.registrationDt = LocalDateTime.now();
+
+        return registrationEntity;
+    }
 }

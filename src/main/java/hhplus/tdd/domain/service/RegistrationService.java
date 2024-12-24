@@ -25,6 +25,8 @@ public class RegistrationService {
 
     public void register(Long lectureId, Long studentId) {
 
+        registrationRepository.save(lectureId, studentId);
+
     }
 
     public List<Registration> getCompletedRegistrationLectures(long studentId) {

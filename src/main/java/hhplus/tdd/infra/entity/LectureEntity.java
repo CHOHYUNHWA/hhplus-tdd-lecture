@@ -33,4 +33,8 @@ public class LectureEntity {
 
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RegistrationEntity> registrationList;
+
+    public void addLectureId(long id){
+        this.id = id;
+    }
 }

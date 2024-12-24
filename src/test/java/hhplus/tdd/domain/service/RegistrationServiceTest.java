@@ -11,8 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class RegistrationServiceTest {
 
@@ -58,4 +57,18 @@ public class RegistrationServiceTest {
         verify(registrationRepository).checkIfLectureAlreadyRegistered(LECTURE_ID, STUDENT_ID);
 
     }
+
+    @Test
+    @DisplayName("정상적으로 특강 신청이 완료된다.")
+    void completeLectureRegistrationSuccessfully(){
+        //given
+        doNothing().when(registrationRepository).save(LECTURE_ID, STUDENT_ID);
+
+        //when
+        assertDoesNotThrow(() -> registrationService.register(LECTURE_ID, STUDENT_ID));
+
+        //then
+        verify(registrationRepository).save(LECTURE_ID, STUDENT_ID);
+    }
+
 }
