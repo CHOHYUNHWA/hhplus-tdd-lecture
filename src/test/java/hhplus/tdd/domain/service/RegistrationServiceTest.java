@@ -1,5 +1,6 @@
 package hhplus.tdd.domain.service;
 
+import hhplus.tdd.domain.model.Registration;
 import hhplus.tdd.domain.repository.RegistrationRepository;
 import hhplus.tdd.global.exception.CustomException;
 import hhplus.tdd.global.exception.ErrorCode;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -69,6 +72,20 @@ public class RegistrationServiceTest {
 
         //then
         verify(registrationRepository).save(LECTURE_ID, STUDENT_ID);
+    }
+
+    @Test
+    @DisplayName("정상적으로 특강 신청 조회가 된다.")
+    void shouldRetrieveLectureRegistrationSuccessfully(){
+        //given
+        List<Registration> mockRegistrationResponse = List.of(mock(Registration.class));
+        when(registrationRepository.findByStudentId(STUDENT_ID)).thenReturn(mockRegistrationResponse);
+
+        //when
+        assertDoesNotThrow(() -> registrationService.getCompletedRegistrationLectures(STUDENT_ID));
+
+        //then
+        verify(registrationRepository).findByStudentId(STUDENT_ID);
     }
 
 }

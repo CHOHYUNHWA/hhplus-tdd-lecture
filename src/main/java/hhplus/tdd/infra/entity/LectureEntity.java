@@ -19,7 +19,7 @@ public class LectureEntity {
     private long id;
 
     @Column(name = "TITLE", nullable = false)
-    private String name;
+    private String title;
 
     @Column(name = "LECTURER", nullable = false)
     private String lecturer;

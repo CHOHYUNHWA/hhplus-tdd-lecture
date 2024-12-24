@@ -30,6 +30,6 @@ public class RegistrationService {
     }
 
     public List<Registration> getCompletedRegistrationLectures(long studentId) {
-        return null;
+        return registrationRepository.findByStudentId(studentId);
     }
 }
