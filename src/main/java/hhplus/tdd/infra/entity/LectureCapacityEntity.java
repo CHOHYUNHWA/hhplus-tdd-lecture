@@ -22,4 +22,8 @@ public class LectureCapacityEntity {
 
     @Column(name = "CURRENT_COUNT", nullable = false)
     private int currentCount;
+
+    public void increaseCurrentCapacity(Integer currentCapacity) {
+        this.currentCount = currentCapacity;
+    }
 }

@@ -11,6 +11,7 @@ import hhplus.tdd.domain.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,23 +24,23 @@ public class LectureFacade {
 
 
     //강의 등록
-    public LectureRegisterResponse registerLecture(RegistrationRequest registrationRequest) {
+    public void registerLecture(RegistrationRequest registrationRequest) {
 
         //수강생이 이미 신청한 강의인치 체크
         registrationService.checkIfLectureAlreadyRegistered(registrationRequest.lectureId(), registrationRequest.studentId());
 
         //강의가 수강신청이 가능한지 확인 후
-        Lecture lecture = lectureService.validateAndGetLectureForRegistration(registrationRequest.lectureId());
+        Lecture lecture = lectureService.checkLectureStatus(registrationRequest.lectureId());
 
-        //강의를 등록
+        //강의 수강신청
         registrationService.register(registrationRequest.lectureId(), registrationRequest.studentId());
 
         //강의 신청 수 +1
-        return lectureService.incrementCapacity(lecture);
+        lectureService.incrementCapacity(lecture);
     }
 
     //날짜로 신청가능한 강의 조회
-    public AvailableLectureResponse getAvailableLectures(LocalDateTime lectureDate) {
+    public AvailableLectureResponse getAvailableLectures(LocalDate lectureDate) {
         List<Lecture> lectures = lectureService.getAvailableLectures(lectureDate);
         return null;
     }

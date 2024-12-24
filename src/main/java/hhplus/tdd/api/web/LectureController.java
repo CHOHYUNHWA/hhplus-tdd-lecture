@@ -2,7 +2,6 @@ package hhplus.tdd.api.web;
 
 import hhplus.tdd.application.dto.AvailableLectureResponse;
 import hhplus.tdd.application.dto.CompletedRegistrationLecturesResponse;
-import hhplus.tdd.application.dto.LectureRegisterResponse;
 import hhplus.tdd.application.dto.RegistrationRequest;
 import hhplus.tdd.application.facade.LectureFacade;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @RestController
 @Slf4j
@@ -28,11 +27,10 @@ public class LectureController {
      * - 정원이 30명을 초과하면 실패
      */
     @PostMapping("/register")
-    public ResponseEntity<LectureRegisterResponse> applyForLecture(
+    public HttpStatus applyForLecture(
             @RequestBody RegistrationRequest registrationRequest
             ) {
-        LectureRegisterResponse lectureRegisterResponse = lectureFacade.registerLecture(registrationRequest);
-        return new ResponseEntity<>(lectureRegisterResponse, HttpStatus.OK);
+        return HttpStatus.CREATED;
     }
 
     /**
@@ -43,7 +41,7 @@ public class LectureController {
      */
     @GetMapping
     public ResponseEntity<AvailableLectureResponse> getAvailableLectures(
-            @RequestParam LocalDateTime date
+            @RequestParam LocalDate date
     ) {
         AvailableLectureResponse availableLectureResponse = lectureFacade.getAvailableLectures(date);
         return new ResponseEntity<>(availableLectureResponse, HttpStatus.OK);
