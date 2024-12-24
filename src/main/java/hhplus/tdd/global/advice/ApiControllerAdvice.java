@@ -1,6 +1,7 @@
 package hhplus.tdd.global.advice;
 
 
+import hhplus.tdd.global.exception.CustomException;
 import hhplus.tdd.global.exception.ErrorCode;
 import hhplus.tdd.global.exception.ErrorResponse;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,11 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         return ErrorResponse.toResponseEntity(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
 
 }
