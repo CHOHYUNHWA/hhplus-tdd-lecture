@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record registrationLecturesResponse (
+public record CompletedRegistrationLecturesResponse (
     List<Registration> registrations
 ){
 
