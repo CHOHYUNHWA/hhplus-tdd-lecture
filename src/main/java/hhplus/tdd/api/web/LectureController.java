@@ -30,6 +30,8 @@ public class LectureController {
     public HttpStatus applyForLecture(
             @RequestBody RegistrationRequest registrationRequest
             ) {
+
+        lectureFacade.registerLecture(registrationRequest);
         return HttpStatus.CREATED;
     }
 
@@ -53,10 +55,10 @@ public class LectureController {
      * - 각 항목은 특강 ID, 이름, 강연자 정보를 포함
      */
     @GetMapping("/{studentId}")
-    public ResponseEntity<Void> getCompletedRegistrationLectures(
+    public ResponseEntity<CompletedRegistrationLecturesResponse> getCompletedRegistrationLectures(
             @PathVariable("studentId") long studentId
     ) {
         CompletedRegistrationLecturesResponse completedRegistrationLecturesResponse = lectureFacade.getCompletedRegistrationLectures(studentId);
-        return null;
+        return new ResponseEntity<>(completedRegistrationLecturesResponse, HttpStatus.OK);
     }
 }
