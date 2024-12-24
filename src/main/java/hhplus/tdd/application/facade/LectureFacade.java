@@ -42,13 +42,13 @@ public class LectureFacade {
     //날짜로 신청가능한 강의 조회
     public AvailableLectureResponse getAvailableLectures(LocalDate lectureDate) {
         List<Lecture> lectures = lectureService.getAvailableLectures(lectureDate);
-        return null;
+        return AvailableLectureResponse.builder().lectures(lectures).build();
     }
 
     //신청 완료한 강의 조회
     public CompletedRegistrationLecturesResponse getCompletedRegistrationLectures(long studentId) {
         List<Registration> registrations = registrationService.getCompletedRegistrationLectures(studentId);
-        return null;
+        return CompletedRegistrationLecturesResponse.builder().registrations(registrations).build();
     }
 
 }
