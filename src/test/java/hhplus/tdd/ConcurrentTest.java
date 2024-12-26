@@ -3,10 +3,12 @@ package hhplus.tdd;
 import hhplus.tdd.application.dto.RegistrationRequest;
 import hhplus.tdd.application.facade.LectureFacade;
 import hhplus.tdd.domain.model.Lecture;
+import hhplus.tdd.domain.model.Registration;
 import hhplus.tdd.domain.repository.LectureRepository;
 import hhplus.tdd.domain.repository.RegistrationRepository;
 import hhplus.tdd.domain.service.LectureService;
 import hhplus.tdd.domain.service.RegistrationService;
+import hhplus.tdd.infra.entity.RegistrationEntity;
 import hhplus.tdd.infra.repository.LectureCapacityJpaRepository;
 import hhplus.tdd.infra.repository.LectureJpaRepository;
 import hhplus.tdd.infra.repository.RegistrationJpaRepository;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -55,7 +58,7 @@ public class ConcurrentTest {
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
 
-        for(long i = 0; i <= threadCount; i++){
+        for(long i = 0; i < threadCount; i++){
             long studentId = i+1L;
             executorService.submit(() -> {
                 try {
@@ -77,4 +80,30 @@ public class ConcurrentTest {
     }
 
 
+    @Test
+    void 한명의_수강생이_동시에_5번_신청할_시_1번만_성공() throws InterruptedException {
+        long lectureId = 3L;
+        long studentId = 50L;
+        int threadCount = 5;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+
+        for(long i = 0; i < threadCount; i++){
+            executorService.submit(() -> {
+                try {
+                    RegistrationRequest registrationRequest = new RegistrationRequest(studentId, lectureId);
+                    lectureFacade.registerLecture(registrationRequest);
+
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                } finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await();
+        List<RegistrationEntity> registrations = registrationJpaRepository.findByStudentId(studentId);
+        assertThat(registrations.size()).isEqualTo(1);
+
+    }
 }
