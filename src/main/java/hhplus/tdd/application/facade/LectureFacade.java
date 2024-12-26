@@ -2,7 +2,6 @@ package hhplus.tdd.application.facade;
 
 import hhplus.tdd.application.dto.AvailableLectureResponse;
 import hhplus.tdd.application.dto.CompletedRegistrationLecturesResponse;
-import hhplus.tdd.application.dto.LectureRegisterResponse;
 import hhplus.tdd.application.dto.RegistrationRequest;
 import hhplus.tdd.domain.model.Lecture;
 import hhplus.tdd.domain.model.Registration;
@@ -10,10 +9,10 @@ import hhplus.tdd.domain.service.LectureService;
 import hhplus.tdd.domain.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,14 +24,16 @@ public class LectureFacade {
 
 
     //강의 등록
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void registerLecture(RegistrationRequest registrationRequest) {
+
+        //신청 가능한 강의 인지 체크
+        Lecture lecture = lectureService.checkLectureStatus(registrationRequest.lectureId());
 
         //수강생이 이미 신청한 강의인치 체크
         registrationService.checkIfLectureAlreadyRegistered(registrationRequest.lectureId(), registrationRequest.studentId());
 
         //강의가 수강신청이 가능한지 확인 후
-        Lecture lecture = lectureService.checkLectureStatus(registrationRequest.lectureId());
 
         //강의 수강신청
         registrationService.register(registrationRequest.lectureId(), registrationRequest.studentId());
