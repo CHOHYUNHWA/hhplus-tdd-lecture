@@ -10,6 +10,7 @@ import hhplus.tdd.domain.service.LectureService;
 import hhplus.tdd.domain.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class LectureFacade {
 
 
     //강의 등록
+    @Transactional
     public void registerLecture(RegistrationRequest registrationRequest) {
 
         //수강생이 이미 신청한 강의인치 체크
