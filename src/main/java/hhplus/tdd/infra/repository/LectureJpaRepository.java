@@ -1,13 +1,15 @@
 package hhplus.tdd.infra.repository;
 
-import hhplus.tdd.domain.model.Lecture;
 import hhplus.tdd.infra.entity.LectureEntity;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface LectureJpaRepository extends JpaRepository<LectureEntity, Long> {
 
@@ -15,4 +17,8 @@ public interface LectureJpaRepository extends JpaRepository<LectureEntity, Long>
     List<LectureEntity> findByLectureDt(
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<LectureEntity> findById(Long lectureId);
+
 }
