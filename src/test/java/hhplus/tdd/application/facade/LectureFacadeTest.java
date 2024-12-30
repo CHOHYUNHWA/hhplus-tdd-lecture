@@ -64,7 +64,7 @@ public class LectureFacadeTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ALREADY_REGISTERED.getMessage());
 
-        verify(lectureService , never()).checkLectureStatus(LECTURE_ID);
+        verify(lectureService).checkLectureStatus(LECTURE_ID);
         verify(registrationService, never()).register(LECTURE_ID, STUDENT_ID);
         verify(lectureService, never()).incrementCapacity(lecture);
     }
@@ -79,7 +79,7 @@ public class LectureFacadeTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.EXCEEDED_REGISTRATION_LIMIT.getMessage());
 
-        verify(registrationService).checkIfLectureAlreadyRegistered(LECTURE_ID, STUDENT_ID);
+        verify(registrationService, never()).checkIfLectureAlreadyRegistered(LECTURE_ID, STUDENT_ID);
         verify(registrationService,never()).register(LECTURE_ID, STUDENT_ID);
         verify(lectureService,never()).incrementCapacity(lecture);
     }
